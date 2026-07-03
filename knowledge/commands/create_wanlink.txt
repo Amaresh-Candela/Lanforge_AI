@@ -1,0 +1,43 @@
+TASK
+
+Create WAN Link
+
+Primary Script
+
+lf_create_wanlink.py
+
+Purpose
+
+Creates a WAN link between two LANforge ports with configurable impairment settings.
+
+Typical User Requests
+
+create wan link
+
+wan link
+
+new wan link
+
+Required Parameters
+
+port_A
+
+port_B
+
+speed
+
+Optional Parameters
+
+latency
+
+jitter
+
+drop
+
+dup_freq
+
+reorder_freq
+
+Category
+
+WAN Emulation

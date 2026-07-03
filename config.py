@@ -1,5 +1,13 @@
 MODEL = "gemma:2b"
 
+LANFORGE_HOST = "192.168.207.78"
+
+LANFORGE_USERNAME = "lanforge"
+
+LANFORGE_PASSWORD = "lanforge"
+
+LANFORGE_PORT = 22
+
 SYSTEM_PROMPT = """
 You are LANforge AI Assistant.
 

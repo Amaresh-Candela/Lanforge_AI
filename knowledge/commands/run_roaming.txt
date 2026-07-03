@@ -1,0 +1,43 @@
+TASK
+
+Run Roaming Test
+
+Primary Script
+
+lf_roam_test.py
+
+Purpose
+
+Performs WiFi roaming tests between multiple access points while monitoring connectivity and performance.
+
+Typical User Requests
+
+run roaming
+
+roaming test
+
+wifi roaming
+
+execute roaming test
+
+Required Parameters
+
+station
+
+ssid
+
+security
+
+password
+
+Optional Parameters
+
+duration
+
+report
+
+attenuation
+
+Category
+
+Roaming Testing

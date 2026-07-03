@@ -1,18 +1,33 @@
-from agent import AIAgent
+from agent.ai_agent import AIAgent
 
 agent = AIAgent()
 
-print("=" * 60)
-print("LANforge AI Assistant")
-print("=" * 60)
+print()
+
+print("LANForge AI Ready")
+
+print()
 
 while True:
 
-    question = input("\nYou : ")
+    question = input("You : ")
 
-    if question.lower() == "exit":
+    if question.lower() in [
+
+        "exit",
+
+        "quit"
+
+    ]:
+
         break
 
     answer = agent.ask(question)
 
-    print("\nAI :", answer)
+    print()
+
+    print("AI :")
+
+    print(answer)
+
+    print()

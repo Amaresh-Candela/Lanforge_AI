@@ -1,0 +1,44 @@
+CANONICAL PARAMETER
+
+station
+
+Meaning
+
+Wireless station that generates or receives traffic.
+
+Aliases
+
+station
+traffic_port
+client
+sta
+
+Appears In
+
+lf_dataplane_test.py
+
+lf_wifi_capacity_test.py
+
+create_station.py
+
+create_l3_stations.py
+
+Typical Values
+
+1.1.wlan0
+
+1.1.sta0001
+
+Related Parameters
+
+radio
+
+ssid
+
+security
+
+upstream_port
+
+Usually Required
+
+Yes

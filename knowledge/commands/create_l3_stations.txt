@@ -1,0 +1,45 @@
+TASK
+
+Create Layer 3 Stations
+
+Primary Script
+
+create_l3_stations.py
+
+Purpose
+
+Creates one or more Layer 3 wireless stations using the specified radio and WiFi configuration.
+
+Typical User Requests
+
+create l3 stations
+
+create layer3 stations
+
+create stations
+
+generate stations
+
+add stations
+
+Required Parameters
+
+radio
+
+ssid
+
+security
+
+password
+
+Optional Parameters
+
+number_of_stations
+
+bssid
+
+channel
+
+Category
+
+Station Provisioning

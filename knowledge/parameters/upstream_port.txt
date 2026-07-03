@@ -1,0 +1,39 @@
+CANONICAL PARAMETER
+
+upstream_port
+
+Meaning
+
+Ethernet interface connected to the upstream network.
+
+Aliases
+
+upstream
+
+upstream_port
+
+port_A
+
+port_B
+
+Appears In
+
+lf_dataplane_test.py
+
+lf_continuous_throughput_test.py
+
+lf_ftp.py
+
+lf_create_wanlink.py
+
+lf_create_wanpath.py
+
+Typical Values
+
+1.1.eth1
+
+1.1.eth2
+
+Usually Required
+
+Yes

@@ -1,0 +1,55 @@
+SCRIPT
+
+lf_dataplane_test.py
+
+Purpose
+
+Runs a throughput test between wireless stations and upstream interfaces.
+
+Category
+
+Traffic Generation
+
+Canonical Parameters
+
+station
+
+upstream_port
+
+rate
+
+duration
+
+report
+
+Imported Modules
+
+Realm.py
+
+StationProfile.py
+
+DataplaneProfile.py
+
+Related Scripts
+
+lf_wifi_capacity_test.py
+
+lf_multi_traffic.py
+
+lf_continuous_throughput_test.py
+
+Outputs
+
+CSV
+
+HTML
+
+PDF
+
+KPIs
+
+Throughput
+
+Latency
+
+Packet Loss

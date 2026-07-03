@@ -1,0 +1,55 @@
+TASK
+
+Run FTP Test
+
+Primary Script
+
+lf_ftp.py
+
+Purpose
+
+Runs FTP upload and download traffic tests using LANforge stations.
+
+Typical User Requests
+
+run ftp
+
+run ftp test
+
+ftp upload
+
+ftp download
+
+ftp throughput
+
+execute ftp
+
+Required Parameters
+
+station
+
+upstream_port
+
+server
+
+username
+
+password
+
+Optional Parameters
+
+duration
+
+report
+
+debug
+
+Related Scripts
+
+lf_dataplane_test.py
+
+lf_multi_traffic.py
+
+Category
+
+Traffic Testing

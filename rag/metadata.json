@@ -1,0 +1,97 @@
+[
+    {
+        "folder": "concepts",
+        "file": "dataplane_testing.txt",
+        "text": "CONCEPT\n\nDataplane Testing\n\nMeaning\n\nRuns network traffic between wireless stations and upstream interfaces while measuring throughput, latency, packet loss and other KPIs.\n\nPurpose\n\nMeasure network performance under controlled conditions.\n\nScripts\n\nlf_dataplane_test.py\nlf_continuous_throughput_test.py\nlf_wifi_capacity_test.py\nlf_ftp.py\nlf_multi_traffic.py\nlf_interop_throughput.py\nlf_interop_speedtest.py\nthroughput_qos.py\nlf_webpage.py\nlf_interop_video_streaming.py\n\nCanonical Parameters\n\nstation\nupstream_port\nrate\nduration\nreport\ndebug\n\nImported Modules\n\nRealm.py\nStationProfile.py\nDataplaneProfile.py\n\nTypical Outputs\n\nThroughput\nLatency\nPacket Loss\nJitter\n\nRelated Concepts\n\nWiFi Capacity\nLayer3\nFTP\nTraffic Generation"
+    },
+    {
+        "folder": "scripts",
+        "file": "lf_dataplane_test.txt",
+        "text": "SCRIPT\n\nlf_dataplane_test.py\n\nPurpose\n\nRuns a throughput test between wireless stations and upstream interfaces.\n\nCategory\n\nTraffic Generation\n\nCanonical Parameters\n\nstation\n\nupstream_port\n\nrate\n\nduration\n\nreport\n\nImported Modules\n\nRealm.py\n\nStationProfile.py\n\nDataplaneProfile.py\n\nRelated Scripts\n\nlf_wifi_capacity_test.py\n\nlf_multi_traffic.py\n\nlf_continuous_throughput_test.py\n\nOutputs\n\nCSV\n\nHTML\n\nPDF\n\nKPIs\n\nThroughput\n\nLatency\n\nPacket Loss"
+    },
+    {
+        "folder": "parameters",
+        "file": "station.txt",
+        "text": "CANONICAL PARAMETER\n\nstation\n\nMeaning\n\nWireless station that generates or receives traffic.\n\nAliases\n\nstation\ntraffic_port\nclient\nsta\n\nAppears In\n\nlf_dataplane_test.py\n\nlf_wifi_capacity_test.py\n\ncreate_station.py\n\ncreate_l3_stations.py\n\nTypical Values\n\n1.1.wlan0\n\n1.1.sta0001\n\nRelated Parameters\n\nradio\n\nssid\n\nsecurity\n\nupstream_port\n\nUsually Required\n\nYes"
+    },
+    {
+        "folder": "parameters",
+        "file": "upstream_port.txt",
+        "text": "CANONICAL PARAMETER\n\nupstream_port\n\nMeaning\n\nEthernet interface connected to the upstream network.\n\nAliases\n\nupstream\n\nupstream_port\n\nport_A\n\nport_B\n\nAppears In\n\nlf_dataplane_test.py\n\nlf_continuous_throughput_test.py\n\nlf_ftp.py\n\nlf_create_wanlink.py\n\nlf_create_wanpath.py\n\nTypical Values\n\n1.1.eth1\n\n1.1.eth2\n\nUsually Required\n\nYes"
+    },
+    {
+        "folder": "aliases",
+        "file": "station_aliases.txt",
+        "text": "CANONICAL NAME\n\nstation\n\nAliases\n\nstation\n\nSource Scripts\n\nlf_wifi_capacity_test.py\nlf_ftp.py\n\n--------------------\n\ntraffic_port\n\nSource Scripts\n\nlf_dataplane_test.py\n\n--------------------\n\nclient\n\nSource Scripts\n\ncreate_station.py\n\n--------------------\n\nsta\n\nSource Scripts\n\ncreate_station.py"
+    },
+    {
+        "folder": "commands",
+        "file": "create station.txt",
+        "text": "TASK\n\nCreate Wireless Station\n\nPrimary Script\n\ncreate_station.py\n\nPurpose\n\nCreates a wireless station and applies WiFi configuration such as SSID, security and password.\n\nTypical User Requests\n\ncreate station\n\nadd station\n\nnew station\n\nwireless station\n\nRequired Parameters\n\nradio\n\nssid\n\nsecurity\n\npassword\n\nOptional Parameters\n\nstation\n\nbssid\n\nchannel\n\ncountry_code\n\nCategory\n\nStation Provisioning"
+    },
+    {
+        "folder": "commands",
+        "file": "create_l3_stations.txt",
+        "text": "TASK\n\nCreate Layer 3 Stations\n\nPrimary Script\n\ncreate_l3_stations.py\n\nPurpose\n\nCreates one or more Layer 3 wireless stations using the specified radio and WiFi configuration.\n\nTypical User Requests\n\ncreate l3 stations\n\ncreate layer3 stations\n\ncreate stations\n\ngenerate stations\n\nadd stations\n\nRequired Parameters\n\nradio\n\nssid\n\nsecurity\n\npassword\n\nOptional Parameters\n\nnumber_of_stations\n\nbssid\n\nchannel\n\nCategory\n\nStation Provisioning"
+    },
+    {
+        "folder": "commands",
+        "file": "create_wanlink.txt",
+        "text": "TASK\n\nCreate WAN Link\n\nPrimary Script\n\nlf_create_wanlink.py\n\nPurpose\n\nCreates a WAN link between two LANforge ports with configurable impairment settings.\n\nTypical User Requests\n\ncreate wan link\n\nwan link\n\nnew wan link\n\nRequired Parameters\n\nport_A\n\nport_B\n\nspeed\n\nOptional Parameters\n\nlatency\n\njitter\n\ndrop\n\ndup_freq\n\nreorder_freq\n\nCategory\n\nWAN Emulation"
+    },
+    {
+        "folder": "commands",
+        "file": "create_wanpath.txt",
+        "text": "TASK\n\nCreate WAN Path\n\nPrimary Script\n\nlf_create_wanpath.py\n\nPurpose\n\nCreates a WAN path with configurable network impairments between LANforge ports.\n\nTypical User Requests\n\ncreate wan path\n\nwan path\n\nnew wan path\n\nRequired Parameters\n\nport_A\n\nport_B\n\nspeed\n\nOptional Parameters\n\nlatency\n\njitter\n\ndrop\n\ndup_freq\n\nreorder_freq\n\nCategory\n\nWAN Emulation"
+    },
+    {
+        "folder": "commands",
+        "file": "run_continuos_throughput.txt",
+        "text": "TASK\n\nRun Continuous Throughput Test\n\nPrimary Script\n\nlf_continuous_throughput_test.py\n\nPurpose\n\nContinuously generates traffic and measures throughput over an extended period.\n\nTypical User Requests\n\nrun continuous throughput\n\ncontinuous throughput test\n\nthroughput monitoring\n\nlong throughput test\n\nRequired Parameters\n\nstation\n\nupstream_port\n\nrate\n\nduration\n\nOptional Parameters\n\nreport\n\ndebug\n\nCategory\n\nTraffic Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_dataplane.txt",
+        "text": "TASK\n\nRun Dataplane Test\n\nPrimary Script\n\nlf_dataplane_test.py\n\nRequired Parameters\n\nstation\n\nupstream_port\n\nrate\n\nOptional Parameters\n\nduration\n\nreport\n\ndebug\n\nExecution Flow\n\nValidate LANforge Manager\n\n\u2193\n\nValidate Station\n\n\u2193\n\nValidate Upstream\n\n\u2193\n\nRun Script\n\n\u2193\n\nMonitor Progress\n\n\u2193\n\nGenerate Report\n\n\u2193\n\nReturn Results"
+    },
+    {
+        "folder": "commands",
+        "file": "run_fpt.txt",
+        "text": "TASK\n\nRun FTP Test\n\nPrimary Script\n\nlf_ftp.py\n\nPurpose\n\nRuns FTP upload and download traffic tests using LANforge stations.\n\nTypical User Requests\n\nrun ftp\n\nrun ftp test\n\nftp upload\n\nftp download\n\nftp throughput\n\nexecute ftp\n\nRequired Parameters\n\nstation\n\nupstream_port\n\nserver\n\nusername\n\npassword\n\nOptional Parameters\n\nduration\n\nreport\n\ndebug\n\nRelated Scripts\n\nlf_dataplane_test.py\n\nlf_multi_traffic.py\n\nCategory\n\nTraffic Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_multi_traffic.txt",
+        "text": "TASK\n\nRun Multi Traffic Test\n\nPrimary Script\n\nlf_multi_traffic.py\n\nPurpose\n\nRuns multiple traffic streams simultaneously between LANforge devices.\n\nTypical User Requests\n\nrun multi traffic\n\nmulti traffic\n\nmultiple traffic\n\ntraffic streams\n\nRequired Parameters\n\nstation\n\nupstream_port\n\ntraffic_profile\n\nOptional Parameters\n\nduration\n\nreport\n\ndebug\n\nCategory\n\nTraffic Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_rf_characterization.txt",
+        "text": "TASK\n\nRun RF Characterization\n\nPrimary Script\n\nlf_rf_char.py\n\nPurpose\n\nPerforms RF characterization testing across selected channels and bandwidths.\n\nTypical User Requests\n\nrun rf characterization\n\nrf characterization\n\nrf test\n\ncharacterize radio\n\nRequired Parameters\n\nradio\n\nchannel\n\nbandwidth\n\nduration\n\nOptional Parameters\n\nreport\n\ndebug\n\nCategory\n\nRF Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_roaming.txt",
+        "text": "TASK\n\nRun Roaming Test\n\nPrimary Script\n\nlf_roam_test.py\n\nPurpose\n\nPerforms WiFi roaming tests between multiple access points while monitoring connectivity and performance.\n\nTypical User Requests\n\nrun roaming\n\nroaming test\n\nwifi roaming\n\nexecute roaming test\n\nRequired Parameters\n\nstation\n\nssid\n\nsecurity\n\npassword\n\nOptional Parameters\n\nduration\n\nreport\n\nattenuation\n\nCategory\n\nRoaming Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_rvr.txt",
+        "text": "TASK\n\nRun Rate Versus Range Test\n\nPrimary Script\n\nlf_rvr_test.py\n\nPurpose\n\nMeasures wireless throughput while varying attenuation to determine rate versus range performance.\n\nTypical User Requests\n\nrun rvr\n\nrate versus range\n\nrvr test\n\nRequired Parameters\n\nstation\n\nattenuator\n\nduration\n\nOptional Parameters\n\nreport\n\ndebug\n\nCategory\n\nRF Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_rx_sensitivity.txt",
+        "text": "TASK\n\nRun RX Sensitivity Test\n\nPrimary Script\n\nlf_rx_sensitivity_test.py\n\nPurpose\n\nMeasures receiver sensitivity by varying signal strength and recording packet reception performance.\n\nTypical User Requests\n\nrun rx sensitivity\n\nreceiver sensitivity\n\nrx sensitivity test\n\nRequired Parameters\n\nstation\n\nattenuator\n\nchannel\n\nduration\n\nOptional Parameters\n\nreport\n\ndebug\n\nCategory\n\nRF Testing"
+    },
+    {
+        "folder": "commands",
+        "file": "run_wifi_capacity.txt",
+        "text": "TASK\n\nRun WiFi Capacity Test\n\nPrimary Script\n\nlf_wifi_capacity_test.py\n\nPurpose\n\nRuns WiFi capacity testing by generating traffic between wireless stations and an upstream port while measuring throughput, latency, packet loss and other KPIs.\n\nTypical User Requests\n\nrun wifi capacity\n\nexecute wifi capacity\n\nwifi capacity\n\nwifi capacity test\n\ncapacity test\n\nmeasure wifi capacity\n\nRequired Parameters\n\nstation\n\nupstream_port\n\nduration\n\nOptional Parameters\n\nrate\n\nreport\n\ndebug\n\nRelated Scripts\n\nlf_dataplane_test.py\n\nlf_continuous_throughput_test.py\n\nCategory\n\nTraffic Testing"
+    },
+    {
+        "folder": "dependencies",
+        "file": "dataplane_dependencies.txt",
+        "text": "PRIMARY SCRIPT\n\nlf_dataplane_test.py\n\nImports\n\nRealm.py\n\nProvides\n\nmgr\n\nmgr_port\n\ndebug\n\n-----------------------\n\nStationProfile.py\n\nProvides\n\nstation\n\nradio\n\nssid\n\nsecurity\n\n-----------------------\n\nDataplaneProfile.py\n\nProvides\n\nrate\n\ntraffic_type\n\nprotocol\n\n-----------------------\n\nReportGenerator.py\n\nProvides\n\ncsv\n\nhtml\n\npdf"
+    }
+]

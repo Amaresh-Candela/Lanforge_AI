@@ -1,0 +1,45 @@
+TASK
+
+Create Wireless Station
+
+Primary Script
+
+create_station.py
+
+Purpose
+
+Creates a wireless station and applies WiFi configuration such as SSID, security and password.
+
+Typical User Requests
+
+create station
+
+add station
+
+new station
+
+wireless station
+
+Required Parameters
+
+radio
+
+ssid
+
+security
+
+password
+
+Optional Parameters
+
+station
+
+bssid
+
+channel
+
+country_code
+
+Category
+
+Station Provisioning

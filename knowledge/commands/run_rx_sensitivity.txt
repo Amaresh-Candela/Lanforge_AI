@@ -1,0 +1,39 @@
+TASK
+
+Run RX Sensitivity Test
+
+Primary Script
+
+lf_rx_sensitivity_test.py
+
+Purpose
+
+Measures receiver sensitivity by varying signal strength and recording packet reception performance.
+
+Typical User Requests
+
+run rx sensitivity
+
+receiver sensitivity
+
+rx sensitivity test
+
+Required Parameters
+
+station
+
+attenuator
+
+channel
+
+duration
+
+Optional Parameters
+
+report
+
+debug
+
+Category
+
+RF Testing

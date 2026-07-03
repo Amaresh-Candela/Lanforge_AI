@@ -1,0 +1,37 @@
+TASK
+
+Run Rate Versus Range Test
+
+Primary Script
+
+lf_rvr_test.py
+
+Purpose
+
+Measures wireless throughput while varying attenuation to determine rate versus range performance.
+
+Typical User Requests
+
+run rvr
+
+rate versus range
+
+rvr test
+
+Required Parameters
+
+station
+
+attenuator
+
+duration
+
+Optional Parameters
+
+report
+
+debug
+
+Category
+
+RF Testing

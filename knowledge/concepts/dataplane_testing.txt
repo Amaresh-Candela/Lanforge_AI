@@ -1,0 +1,53 @@
+CONCEPT
+
+Dataplane Testing
+
+Meaning
+
+Runs network traffic between wireless stations and upstream interfaces while measuring throughput, latency, packet loss and other KPIs.
+
+Purpose
+
+Measure network performance under controlled conditions.
+
+Scripts
+
+lf_dataplane_test.py
+lf_continuous_throughput_test.py
+lf_wifi_capacity_test.py
+lf_ftp.py
+lf_multi_traffic.py
+lf_interop_throughput.py
+lf_interop_speedtest.py
+throughput_qos.py
+lf_webpage.py
+lf_interop_video_streaming.py
+
+Canonical Parameters
+
+station
+upstream_port
+rate
+duration
+report
+debug
+
+Imported Modules
+
+Realm.py
+StationProfile.py
+DataplaneProfile.py
+
+Typical Outputs
+
+Throughput
+Latency
+Packet Loss
+Jitter
+
+Related Concepts
+
+WiFi Capacity
+Layer3
+FTP
+Traffic Generation

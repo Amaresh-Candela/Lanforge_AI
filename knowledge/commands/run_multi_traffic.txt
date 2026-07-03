@@ -1,0 +1,41 @@
+TASK
+
+Run Multi Traffic Test
+
+Primary Script
+
+lf_multi_traffic.py
+
+Purpose
+
+Runs multiple traffic streams simultaneously between LANforge devices.
+
+Typical User Requests
+
+run multi traffic
+
+multi traffic
+
+multiple traffic
+
+traffic streams
+
+Required Parameters
+
+station
+
+upstream_port
+
+traffic_profile
+
+Optional Parameters
+
+duration
+
+report
+
+debug
+
+Category
+
+Traffic Testing

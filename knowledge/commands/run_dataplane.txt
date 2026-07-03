@@ -1,0 +1,51 @@
+TASK
+
+Run Dataplane Test
+
+Primary Script
+
+lf_dataplane_test.py
+
+Required Parameters
+
+station
+
+upstream_port
+
+rate
+
+Optional Parameters
+
+duration
+
+report
+
+debug
+
+Execution Flow
+
+Validate LANforge Manager
+
+↓
+
+Validate Station
+
+↓
+
+Validate Upstream
+
+↓
+
+Run Script
+
+↓
+
+Monitor Progress
+
+↓
+
+Generate Report
+
+↓
+
+Return Results

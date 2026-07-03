@@ -1,0 +1,41 @@
+TASK
+
+Run Continuous Throughput Test
+
+Primary Script
+
+lf_continuous_throughput_test.py
+
+Purpose
+
+Continuously generates traffic and measures throughput over an extended period.
+
+Typical User Requests
+
+run continuous throughput
+
+continuous throughput test
+
+throughput monitoring
+
+long throughput test
+
+Required Parameters
+
+station
+
+upstream_port
+
+rate
+
+duration
+
+Optional Parameters
+
+report
+
+debug
+
+Category
+
+Traffic Testing

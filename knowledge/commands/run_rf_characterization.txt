@@ -1,0 +1,41 @@
+TASK
+
+Run RF Characterization
+
+Primary Script
+
+lf_rf_char.py
+
+Purpose
+
+Performs RF characterization testing across selected channels and bandwidths.
+
+Typical User Requests
+
+run rf characterization
+
+rf characterization
+
+rf test
+
+characterize radio
+
+Required Parameters
+
+radio
+
+channel
+
+bandwidth
+
+duration
+
+Optional Parameters
+
+report
+
+debug
+
+Category
+
+RF Testing

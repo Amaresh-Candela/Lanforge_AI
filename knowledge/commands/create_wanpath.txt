@@ -1,0 +1,43 @@
+TASK
+
+Create WAN Path
+
+Primary Script
+
+lf_create_wanpath.py
+
+Purpose
+
+Creates a WAN path with configurable network impairments between LANforge ports.
+
+Typical User Requests
+
+create wan path
+
+wan path
+
+new wan path
+
+Required Parameters
+
+port_A
+
+port_B
+
+speed
+
+Optional Parameters
+
+latency
+
+jitter
+
+drop
+
+dup_freq
+
+reorder_freq
+
+Category
+
+WAN Emulation

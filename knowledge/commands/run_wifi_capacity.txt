@@ -1,0 +1,51 @@
+TASK
+
+Run WiFi Capacity Test
+
+Primary Script
+
+lf_wifi_capacity_test.py
+
+Purpose
+
+Runs WiFi capacity testing by generating traffic between wireless stations and an upstream port while measuring throughput, latency, packet loss and other KPIs.
+
+Typical User Requests
+
+run wifi capacity
+
+execute wifi capacity
+
+wifi capacity
+
+wifi capacity test
+
+capacity test
+
+measure wifi capacity
+
+Required Parameters
+
+station
+
+upstream_port
+
+duration
+
+Optional Parameters
+
+rate
+
+report
+
+debug
+
+Related Scripts
+
+lf_dataplane_test.py
+
+lf_continuous_throughput_test.py
+
+Category
+
+Traffic Testing

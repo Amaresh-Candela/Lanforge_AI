@@ -2,7 +2,7 @@ import ast
 
 from parser.argument_parser import ArgumentParser
 from parser.import_parser import ImportParser
-from parser.requirement_inference import RequirementInference
+from parser.execution_analyzer import ExecutionAnalyzer
 
 
 class ScriptAnalyzer:
@@ -13,7 +13,8 @@ class ScriptAnalyzer:
 
         self.import_parser = ImportParser()
 
-        self.requirement_parser = RequirementInference()
+        self.execution_analyzer = ExecutionAnalyzer()
+
 
     def analyze(self, filename):
 
@@ -23,11 +24,11 @@ class ScriptAnalyzer:
 
         result["imports"] = self.import_parser.parse(filename)
 
-        result["required"] = self.requirement_parser.infer(filename)
 
         result["classes"] = self.get_classes(filename)
 
         result["functions"] = self.get_functions(filename)
+        result["required"] = self.execution_analyzer.analyze(filename)
 
         return result
 

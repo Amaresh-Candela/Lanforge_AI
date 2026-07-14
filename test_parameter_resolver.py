@@ -1,12 +1,10 @@
 from agent.parameter_resolver import ParameterResolver
 
+
 resolver = ParameterResolver()
 
-while True:
+question = "Run dataplane test"
 
-    script = input("\nScript : ")
+result = resolver.resolve(question)
 
-    result = resolver.resolve(script)
-
-    print()
-    print(result)
+print(result)

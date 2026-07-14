@@ -19,6 +19,9 @@ from agent.lanforge_executor import LANforgeExecutor
 class AIAgent:
 
     def __init__(self):
+        from agent.conversation import Conversation
+
+        self.conversation = Conversation()
 
         self.memory = Memory()
 
@@ -33,11 +36,7 @@ class AIAgent:
         self.rag = Retriever()
         self.state = ConversationState()
 
-        self.executor = LANforgeExecutor(
-
-            host="192.168.207.78"
-
-        )
+        self.executor = LANforgeExecutor()
 
     def ask(self, question):
 
@@ -74,9 +73,19 @@ class AIAgent:
         # -------------------------
         elif plan["tool"] == "lanforge":
 
-            result = self.executor.prepare(question)
+            if self.executor.runtime is None:
 
-            return result
+                host = input("\nLANForge IP : ")
+
+                result = self.executor.connect(host)
+
+                if result["status"] != "connected":
+
+                    return "Failed to connect to LANForge."
+
+                print(f"\nConnected to {host}\n")
+
+            return self.executor.ask(question)
         
         elif plan["tool"] == "rag":
 

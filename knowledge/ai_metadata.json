@@ -1,0 +1,29 @@
+{
+    "lf_dataplane_test.py": {
+        "purpose": "Configure and run a LANForge test for data plane operations.",
+        "summary": "This script parses command line arguments, validates them, configures logging, applies JSON configurations if provided, and runs the specified LANForge test.",
+        "required": [],
+        "optional": [
+            "lf_logger_config_json",
+            "help_summary"
+        ],
+        "resources": [
+            "argparse",
+            "importlib",
+            "json",
+            "logging",
+            "os",
+            "sys",
+            "time"
+        ],
+        "execution_order": [
+            "parse_args",
+            "validate_args",
+            "configure_logging",
+            "__apply_csv_json",
+            "setup",
+            "main"
+        ],
+        "example": ""
+    }
+}

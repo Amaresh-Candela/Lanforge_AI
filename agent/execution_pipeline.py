@@ -6,11 +6,11 @@ from tools.inventory import Inventory
 
 class ExecutionPipeline:
 
-    def __init__(self, host):
+    def __init__(self, runtime):
 
-        self.inventory = Inventory(host)
+        self.runtime = runtime
 
-        self.inventory_resolver = InventoryResolver(self.inventory)
+        self.inventory_resolver = InventoryResolver(runtime)
 
         self.collector = ParameterCollector()
 

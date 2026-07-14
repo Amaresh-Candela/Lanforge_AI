@@ -22,7 +22,15 @@ while True:
 
         break
 
-    answer = agent.ask(question)
+    if agent.executor.conversation.active:
+
+        answer = agent.executor.continue_conversation(
+            question
+        )
+
+    else:
+
+        answer = agent.ask(question)
 
     print()
 

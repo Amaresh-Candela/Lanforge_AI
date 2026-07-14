@@ -1,11 +1,18 @@
 class CommandBuilder:
 
     def __init__(self):
-        pass
+
+        self.script_root = "/home/lanforge/scripts/py-scripts"
 
     def build(self, script, parameters):
 
         command = [
+
+            "cd",
+
+            self.script_root,
+
+            "&&",
 
             "python3",
 

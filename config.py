@@ -1,4 +1,4 @@
-MODEL = "gemma:2b"
+MODEL = "qwen2.5:3b-instruct"
 
 LANFORGE_HOST = "192.168.207.78"
 

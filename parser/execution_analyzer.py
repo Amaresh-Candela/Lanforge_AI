@@ -1,47 +1,109 @@
-class ExecutionAnalyzer:
+import ast
+
+
+class RequiredArgumentVisitor(ast.NodeVisitor):
 
     def __init__(self):
-        pass
 
-    def analyze(self, script_name, arguments):
+        self.required = set()
 
-        execution = {
+    def visit_If(self, node):
 
-            "script": script_name,
+        self.check(node.test)
 
-            "required": [],
+        self.generic_visit(node)
 
-            "optional": [],
+    def visit_Call(self, node):
 
-            "aliases": {},
+        # parser.error("...")
+        if isinstance(node.func, ast.Attribute):
 
-            "defaults": {},
+            if node.func.attr == "error":
 
-            "help": {}
+                for arg in ast.walk(node):
 
-        }
+                    if isinstance(arg, ast.Attribute):
 
-        for arg in arguments:
+                        if isinstance(arg.value, ast.Name):
 
-            dest = arg.get("dest")
+                            if arg.value.id == "args":
 
-            aliases = arg.get("aliases", [])
+                                self.required.add(arg.attr)
 
-            default = arg.get("default")
+        self.generic_visit(node)
 
-            help_text = arg.get("help", "")
+    def check(self, node):
 
-            required = arg.get("required", False)
+        # if not args.station
+        if isinstance(node, ast.UnaryOp):
 
-            if required:
-                execution["required"].append(dest)
-            else:
-                execution["optional"].append(dest)
+            if isinstance(node.op, ast.Not):
 
-            execution["aliases"][dest] = aliases
+                operand = node.operand
 
-            execution["defaults"][dest] = default
+                if isinstance(operand, ast.Attribute):
 
-            execution["help"][dest] = help_text
+                    if isinstance(operand.value, ast.Name):
 
-        return execution
+                        if operand.value.id == "args":
+
+                            self.required.add(
+                                operand.attr
+                            )
+
+        # if args.station == ""
+        elif isinstance(node, ast.Compare):
+
+            left = node.left
+
+            if isinstance(left, ast.Attribute):
+
+                if isinstance(left.value, ast.Name):
+
+                    if left.value.id == "args":
+
+                        self.required.add(
+                            left.attr
+                        )
+
+        # len(args.station)
+        elif isinstance(node, ast.Call):
+
+            if isinstance(node.func, ast.Name):
+
+                if node.func.id == "len":
+
+                    for arg in node.args:
+
+                        if isinstance(arg, ast.Attribute):
+
+                            if isinstance(arg.value, ast.Name):
+
+                                if arg.value.id == "args":
+
+                                    self.required.add(
+                                        arg.attr
+                                    )
+
+
+class ExecutionAnalyzer:
+
+    def analyze(self, filename):
+
+        with open(
+
+            filename,
+
+            encoding="utf8",
+
+            errors="ignore"
+
+        ) as f:
+
+            tree = ast.parse(f.read())
+
+        visitor = RequiredArgumentVisitor()
+
+        visitor.visit(tree)
+
+        return sorted(visitor.required)

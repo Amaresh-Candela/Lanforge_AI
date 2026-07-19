@@ -21,6 +21,12 @@ class ArgumentVisitor(ast.NodeVisitor):
                 help_text = ""
                 arg_type = None
 
+                choices = None
+                nargs = None
+                action = None
+                metavar = None
+                const = None
+
                 # positional arguments
                 for arg in node.args:
 
@@ -56,7 +62,39 @@ class ArgumentVisitor(ast.NodeVisitor):
                         if isinstance(kw.value, ast.Name):
                             arg_type = kw.value.id
 
-                # if dest not supplied
+                    elif kw.arg == "action":
+
+                        if isinstance(kw.value, ast.Constant):
+                            action = kw.value.value
+
+                    elif kw.arg == "metavar":
+
+                        if isinstance(kw.value, ast.Constant):
+                            metavar = kw.value.value
+
+                    elif kw.arg == "const":
+
+                        if isinstance(kw.value, ast.Constant):
+                            const = kw.value.value
+
+                    elif kw.arg == "nargs":
+
+                        if isinstance(kw.value, ast.Constant):
+                            nargs = kw.value.value
+
+                    elif kw.arg == "choices":
+
+                        if isinstance(kw.value, ast.List):
+
+                            choices = []
+
+                            for item in kw.value.elts:
+
+                                if isinstance(item, ast.Constant):
+
+                                    choices.append(item.value)
+
+                # infer dest if not supplied
                 if dest is None:
 
                     for alias in aliases:
@@ -67,14 +105,33 @@ class ArgumentVisitor(ast.NodeVisitor):
                             break
 
                 self.arguments.append(
+
                     {
+
                         "dest": dest,
+
                         "aliases": aliases,
+
                         "default": default,
+
                         "required": required,
+
                         "help": help_text,
-                        "type": arg_type
+
+                        "type": arg_type,
+
+                        "choices": choices,
+
+                        "nargs": nargs,
+
+                        "action": action,
+
+                        "metavar": metavar,
+
+                        "const": const
+
                     }
+
                 )
 
         self.generic_visit(node)

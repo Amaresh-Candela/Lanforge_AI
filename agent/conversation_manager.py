@@ -7,7 +7,7 @@ class ConversationManager:
 
         self.runtime = runtime
 
-    def _build_option_list(self, title, options):
+    def _build_option_list(self, title, options, multiple):
 
         if not options:
             return ""
@@ -15,55 +15,92 @@ class ConversationManager:
         text = f"\n\nAvailable {title}:\n\n"
 
         for i, option in enumerate(options, start=1):
+
             text += f"{i}. {option}\n"
 
-        text += (
-            "\nYou can select:\n"
-            "- A single number (e.g. 2)\n"
-            "- Multiple numbers (e.g. 1,3,5)\n"
-            "- 'all' to select everything\n"
-        )
+        text += "\nYou can select:\n"
+
+        if multiple:
+
+            text += (
+                "- A single number (e.g. 2)\n"
+                "- Multiple numbers (e.g. 1,3,5)\n"
+                "- all\n"
+            )
+
+        else:
+
+            text += "- A single number (e.g. 2)\n"
 
         return text
 
-    def ask(self, parameter):
+    def ask(self, argument):
+
+        parameter = argument["dest"]
 
         message = QUESTIONS.get(
+
             parameter,
+
             f"Please provide '{parameter}'."
+
         )
 
-        if parameter in ["station", "stations"]:
+        resolver = argument.get("resolver")
 
-            stations = sorted(
-                self.runtime.stations.keys()
+        multiple = argument.get("multiple", False)
+
+        if resolver:
+
+            options = sorted(
+
+                getattr(
+
+                    self.runtime,
+
+                    resolver,
+
+                    {}
+
+                ).keys()
+
             )
+            self.runtime.current_options = options
+
+            title = resolver.replace("_", " ").title()
 
             message += self._build_option_list(
-                "Stations",
-                stations
+
+                title,
+
+                options,
+
+                multiple
+
             )
 
-        elif parameter in ["upstream", "upstream_port"]:
+        elif argument.get("choices"):
 
-            ports = sorted(
-                self.runtime.ethernet.keys()
-            )
+            choices = argument["choices"]
 
             message += self._build_option_list(
-                "Ethernet Ports",
-                ports
+
+                "Choices",
+
+                choices,
+
+                multiple
+
             )
 
-        elif parameter == "radio":
+        elif argument.get("default") not in [None, ""]:
 
-            radios = sorted(
-                self.runtime.radios.keys()
-            )
+            message += (
 
-            message += self._build_option_list(
-                "Radios",
-                radios
+                f"\n\nDefault Value : "
+
+                f"{argument['default']}"
+
             )
 
         return message

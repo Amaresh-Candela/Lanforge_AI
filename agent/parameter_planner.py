@@ -15,22 +15,22 @@ class ParameterPlanner:
 
     def plan(self, script):
 
-        context = self.context.build(script)
+        context_dict = self.context.build(script)
+        if context_dict:
+            context_dict["source"] = "Omitted for context size limit"
+        context = json.dumps(context_dict, indent=4)
 
         prompt = f"""
 You are a LANForge engineer.
 
-Below is the complete source code and metadata of a LANForge script.
+Below is the metadata of a LANForge script.
 
-Determine ONLY the parameters that a user must provide before this script can be executed.
+Determine ONLY the parameters that a user must provide before this script can be executed successfully.
 
-Do NOT include optional arguments.
-
-Do NOT include debugging arguments.
-
-Do NOT include logging arguments.
-
-Do NOT include json configuration arguments.
+Important Rules:
+1. Always include 'dut' (if present in the script's arguments) as a required parameter for any WiFi, station, or dataplane test scripts, as these tests cannot run without a target Device Under Test.
+2. Always include 'local_lf_report_dir' (if present in the arguments) as a required parameter to ensure reports can be successfully pulled.
+3. Do NOT include optional debugging, logging, or help flags.
 
 Return ONLY valid JSON.
 
@@ -40,7 +40,9 @@ Example:
     "required":[
         "station",
         "upstream",
-        "speed"
+        "speed",
+        "dut",
+        "local_lf_report_dir"
     ]
 }}
 

@@ -1,0 +1,131 @@
+{
+    "lf_dataplane_test.py": {
+        "name": "lf_dataplane_test.py",
+        "path": "py-scripts/lf_dataplane_test.py",
+        "required": [
+            "station",
+            "upstream",
+            "speed"
+        ],
+        "optional": [
+            "duration",
+            "traffic_directions",
+            "traffic_types",
+            "bandwidths",
+            "channels",
+            "dut",
+            "verbosity",
+            "json"
+        ],
+        "arguments": [
+            {
+                "dest": "station",
+                "type": "station",
+                "help": "Station used in the test",
+                "required": true,
+                "multiple": false,
+                "resolver": "stations",
+                "choices": null,
+                "value_type": "station"
+            },
+            {
+                "dest": "upstream",
+                "type": "ethernet",
+                "help": "Upstream ethernet port",
+                "required": true,
+                "multiple": false,
+                "resolver": "ethernet",
+                "choices": null,
+                "value_type": "ethernet"
+            },
+            {
+                "dest": "speed",
+                "type": "string",
+                "help": "Traffic speed",
+                "required": true,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "duration",
+                "type": "string",
+                "help": "Duration of test",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "traffic_directions",
+                "type": "string",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "traffic_types",
+                "type": "string",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "bandwidths",
+                "type": "string",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "channels",
+                "type": "string",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "dut",
+                "type": "string",
+                "required": false,
+                "multiple": false,
+                "resolver": "duts",
+                "choices": null,
+                "value_type": "string"
+            },
+            {
+                "dest": "verbosity",
+                "type": "int",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "integer"
+            },
+            {
+                "dest": "json",
+                "type": "path",
+                "required": false,
+                "multiple": false,
+                "resolver": null,
+                "choices": null,
+                "value_type": "path"
+            }
+        ],
+        "resources": {
+            "station": "station",
+            "upstream": "ethernet"
+        },
+        "example": "python3 lf_dataplane_test.py --station 1.1.sta0000 --upstream 1.1.eth2 --speed 1Gbps"
+    }
+}

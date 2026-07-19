@@ -1,5 +1,6 @@
 import json
 
+from agent.selection_parser import SelectionParser
 from agent.execution_pipeline import ExecutionPipeline
 from agent.script_resolver import ScriptResolver
 from agent.runtime_manager import RuntimeManager
@@ -7,7 +8,9 @@ from agent.conversation import Conversation
 from agent.conversation_manager import ConversationManager
 from agent.resource_selector import ResourceSelector
 from agent.parameter_planner import ParameterPlanner
+from agent.entity_extractor import EntityExtractor
 from tools.ssh import SSHManager
+from agent.parameter_extractor import ParameterExtractor
 
 
 class RuntimeInventoryAdapter:
@@ -62,7 +65,8 @@ class RuntimeInventoryAdapter:
 class LANforgeExecutor:
 
     def __init__(self):
-
+        from agent.entity_extractor import EntityExtractor
+        self.entity_extractor = EntityExtractor()
         self.runtime_manager = RuntimeManager()
         self.runtime = None
         self.runtime_view = None
@@ -73,6 +77,8 @@ class LANforgeExecutor:
         self.script_resolver = ScriptResolver()
         self.selector = ResourceSelector()
         self.parameter_planner = ParameterPlanner()
+        self.parameter_extractor = ParameterExtractor()
+        self.selection_parser = SelectionParser()
 
         with open("knowledge/knowledge.json", encoding="utf8") as f:
             self.knowledge = json.load(f)
@@ -103,8 +109,50 @@ class LANforgeExecutor:
     def _build_execution(self, script):
         info = self.knowledge["scripts"][script]
 
+        from agent.script_overrides import SCRIPT_OVERRIDES
+        override = SCRIPT_OVERRIDES.get(script)
+
+        if override:
+            required = list(override["required"])
+            optional = list(override["optional"])
+            
+            execution = {
+                "required": required,
+                "optional": optional,
+                "info": {}
+            }
+            required_set = set(required)
+            optional_set = set(optional)
+            
+            for arg in info.get("arguments", []):
+                dest = arg.get("dest")
+                if dest in required_set or dest in optional_set:
+                    arg_copy = dict(arg)
+                    if dest == "traffic_types":
+                        arg_copy["choices"] = ["UDP", "TCP"]
+                    elif dest == "traffic_directions":
+                        arg_copy["choices"] = ["DUT-TX", "DUT-RX"]
+                    elif dest == "spatial_streams":
+                        arg_copy["choices"] = ["1", "2", "3", "4", "AUTO"]
+                    elif dest == "bandwidths":
+                        arg_copy["choices"] = ["20", "40", "80", "160", "320"]
+                    elif dest == "channels":
+                        arg_copy["choices"] = ["6", "11", "36", "40", "44", "48", "149", "153", "157", "161"]
+                    execution["info"][dest] = arg_copy
+            return execution
+
         planner_required = self.parameter_planner.plan(script).get("required", [])
-        required = planner_required or info.get("required", [])
+        info_required = [arg["dest"] for arg in info.get("arguments", []) if arg.get("required")]
+        required = planner_required or info_required
+
+        # Dynamic safety net for wireless and report settings
+        all_dests = {arg["dest"] for arg in info.get("arguments", []) if arg.get("dest")}
+        if "dut" in all_dests and ("wifi" in script or "dataplane" in script or "roam" in script or "rvr" in script):
+            if "dut" not in required:
+                required.append("dut")
+        if "local_lf_report_dir" in all_dests:
+            if "local_lf_report_dir" not in required:
+                required.append("local_lf_report_dir")
 
         execution = {
             "required": required,
@@ -187,6 +235,9 @@ class LANforgeExecutor:
         return text
 
     def ask(self, question):
+        values = self.parameter_extractor.extract(question)
+
+        result = self.script_resolver.resolve(question)
 
         if self.runtime_view is None:
             return {
@@ -227,10 +278,11 @@ class LANforgeExecutor:
 
         execution = self._build_execution(script)
 
+
         pipeline_result = self.pipeline.prepare(
             script,
             execution,
-            {}
+            values
         )
 
         if pipeline_result["status"] == "missing":
@@ -250,34 +302,39 @@ class LANforgeExecutor:
                 execution["optional"],
                 execution["info"]
             )
-            self.conversation.stage = "required"
-            self.conversation.selected_optional = None
+            # Pre-populate already extracted/auto-resolved values
+            known_values = {}
+            known_values.update(pipeline_result.get("known", {}))
+            known_values.update(values)
+            for k, v in known_values.items():
+                if k in execution["required"] or k in execution["optional"]:
+                    self.conversation.values[k] = v
 
-            if self.conversation_manager is not None:
-                return self.conversation_manager.ask(parameter)
+            argument = execution["info"][parameter]
 
-            if parameter in ["station", "stations"]:
-                resources = sorted(self.runtime_view.stations.keys())
-                self.conversation.options = resources
-                return self.selector.select_message("Stations", resources)
+            resolver = argument.get("resolver")
 
-            elif parameter in ["upstream", "upstream_port"]:
-                resources = sorted(self.runtime_view.ethernet.keys())
-                self.conversation.options = resources
-                return self.selector.select_message("Ethernet Ports", resources)
+            if resolver:
 
-            elif parameter == "radio":
-                resources = sorted(self.runtime_view.radios.keys())
-                self.conversation.options = resources
-                return self.selector.select_message("Radios", resources)
+                self.conversation.options = sorted(
 
-            info_item = execution["info"].get(parameter, {})
-            message = f"Enter value for '{parameter}'."
+                    getattr(
 
-            if info_item.get("help"):
-                message += f"\n\nHelp: {info_item['help']}"
+                        self.runtime_view,
 
-            return message
+                        resolver,
+
+                        {}
+
+                    ).keys()
+
+                )
+
+            else:
+
+                self.conversation.options = []
+
+            return self.conversation_manager.ask(argument)
 
         if pipeline_result["status"] == "ready":
             return self._execute_command(pipeline_result["command"])
@@ -317,6 +374,32 @@ class LANforgeExecutor:
             if help_text:
                 message += f"\n\nHelp: {help_text}"
 
+            resolver = info.get("resolver")
+            choices = info.get("choices")
+
+            if resolver:
+                options = sorted(
+                    getattr(
+                        self.runtime_view,
+                        resolver,
+                        {}
+                    ).keys()
+                )
+                self.conversation.options = options
+                title = resolver.replace("_", " ").title()
+                message += f"\n\nAvailable {title}:\n\n"
+                for i, opt in enumerate(options, start=1):
+                    message += f"{i}. {opt}\n"
+                message += "\nYou can select by number or list (if multiple)."
+            elif choices:
+                self.conversation.options = choices
+                message += f"\n\nAvailable Choices:\n\n"
+                for i, opt in enumerate(choices, start=1):
+                    message += f"{i}. {opt}\n"
+                message += "\nYou can select by number or list (if multiple)."
+            else:
+                self.conversation.options = []
+
             return message
 
         if stage == "optional_value":
@@ -328,20 +411,45 @@ class LANforgeExecutor:
 
             info = self.conversation.argument_info.get(parameter, {})
             default = info.get("default", "")
+            multiple = info.get("multiple", False)
 
-            value = default if text == "" else text
+            if text == "":
+                value = default
+            elif self.conversation.options:
+                resolved_value = self.selection_parser.parse(text, self.conversation.options, multiple)
+                if isinstance(resolved_value, list):
+                    value = ",".join(resolved_value)
+                else:
+                    value = resolved_value
+            else:
+                value = text
+
             self.conversation.values[parameter] = value
 
             self.conversation.selected_optional = None
             self.conversation.stage = "optional_select"
+            self.conversation.options = []
 
             return self.show_optional_parameters()
 
-        self.conversation.add(user_input)
+        current_param = self.conversation.current()
+        arg_info = self.conversation.argument_info.get(current_param, {})
+        multiple = arg_info.get("multiple", False)
+
+        if self.conversation.options:
+            resolved_value = self.selection_parser.parse(user_input, self.conversation.options, multiple)
+            # If resolved_value is a list, format it as a comma-separated string for command-line compatibility
+            if isinstance(resolved_value, list):
+                resolved_value = ",".join(resolved_value)
+        else:
+            resolved_value = user_input
+
+        self.conversation.add(resolved_value)
 
         if not self.conversation.complete():
             next_parameter = self.conversation.current()
-            return self.conversation_manager.ask(next_parameter)
+            argument_dict = self.conversation.argument_info.get(next_parameter, {})
+            return self.conversation_manager.ask(argument_dict)
 
         if self.conversation.optional:
             self.conversation.stage = "optional_confirm"

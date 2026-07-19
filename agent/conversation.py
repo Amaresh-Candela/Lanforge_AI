@@ -27,6 +27,8 @@ class Conversation:
 
         self.optional = []
 
+        self.options = []
+
         self.ask_optional = False
 
     def start(self, script, required, optional, info):
@@ -44,19 +46,19 @@ class Conversation:
         self.argument_info = info
 
     def current(self):
-
-        if self.index >= len(self.arguments):
-
-            return None
-
-        return self.arguments[self.index]
+        while self.index < len(self.arguments):
+            arg = self.arguments[self.index]
+            if arg in self.values and self.values[arg] not in [None, ""]:
+                self.index += 1
+            else:
+                return arg
+        return None
 
     def add(self, value):
-
-        self.values[self.current()] = value
-
-        self.index += 1
+        curr = self.current()
+        if curr:
+            self.values[curr] = value
+            self.index += 1
 
     def complete(self):
-
-        return self.index >= len(self.arguments)
+        return self.current() is None

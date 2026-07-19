@@ -1,7 +1,6 @@
 from ollama import chat
 from config import MODEL
 
-
 class IntentClassifier:
 
     def __init__(self):
@@ -149,7 +148,6 @@ No explanation.
         )
 
         intent = response["message"]["content"].strip().lower()
-
         valid = {
             "chat",
             "terminal",

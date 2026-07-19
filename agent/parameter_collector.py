@@ -9,9 +9,11 @@ class ParameterCollector:
         if user_values is None:
             user_values = {}
 
+        self.values = {}
         missing = []
 
         required = execution.get("required", [])
+        optional = execution.get("optional", [])
 
         for parameter in required:
 
@@ -22,6 +24,12 @@ class ParameterCollector:
             else:
 
                 missing.append(parameter)
+
+        for parameter in optional:
+
+            if parameter in user_values:
+
+                self.values[parameter] = user_values[parameter]
 
         return {
 

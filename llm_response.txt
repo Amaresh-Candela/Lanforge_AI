@@ -1,0 +1,139 @@
+{
+  "name": "lanforge-dataplane-test",
+  "description": "A command‑line tool that drives LANforge dataplane tests (e.g., packet loss, bit error, throughput). It accepts a JSON or CSV configuration file, optional remote host/port for LANforge, attenuation settings, and report options. The script sets up logging, validates arguments, creates a `DataplaneTest` instance, runs the test plan, and optionally pulls reports back to the local machine.",
+  "version": "0.1",
+  "author": "LANforge Team",
+  "dependencies": [
+    {"package":"argparse","version":null},
+    {"package":"json","version":null},
+    {"package":"logging","version":null},
+    {"package":"os","version":null},
+    {"package":"sys","version":null},
+    {"package":"time","version":null}
+  ],
+  "functions": [
+    {
+      "name": "parse_args",
+      "description": "Parse command‑line arguments and return a Namespace.",
+      "parameters": [],
+      "returns": {
+        "type": "argparse.Namespace",
+        "description": "Namespace containing all parsed CLI options."
+      },
+      "example_usage": ["python lanforge_dataplane_test.py --remote_host 192.168.1.2"]
+    },
+    {
+      "name": "validate_args",
+      "description": "Validate that required arguments are present and that supplied values are sane.",
+      "parameters": [
+        {"name":"args","type":"argparse.Namespace","required":true,"description":"Parsed CLI arguments"}
+      ],
+      "returns": {"type":"None"},
+      "example_usage": ["validate_args(args)"]
+    },
+    {
+      "name": "configure_logging",
+      "description": "Configure the Python logging module according to log_level, log_format and logger_no_file flags.",
+      "parameters": [
+        {"name":"args","type":"argparse.Namespace","required":true}
+      ],
+      "returns": {"type":"None"},
+      "example_usage": ["configure_logging(args)"]
+    },
+    {
+      "name": "apply_json_configuration",
+      "description": "Load a JSON configuration file and apply it to the test instance.",
+      "parameters": [
+        {"name":"config_path","type":"str","required":true,"description":"Path to JSON config file"},
+        {"name":"test_instance","type":"DataplaneTest","required":true}
+      ],
+      "returns": {"type":"None"}
+    },
+    {
+      "name": "__apply_csv_json",
+      "description": "(Internal) Convert a CSV‑based test configuration into the JSON format expected by `DataplaneTest`.",
+      "parameters": [
+        {"name":"csv_path","type":"str","required":true}
+      ],
+      "returns": {"type":"dict","description":"JSON representation of the test plan"}
+    },
+    {
+      "name": "__init__",
+      "description": "(Class constructor) Create a new DataplaneTest instance from CLI args and optional config dict.",
+      "parameters": [
+        {"name":"args","type":"argparse.Namespace","required":true}
+      ],
+      "returns":{"type":"None"}
+    },
+    {
+      "name": "_prepare_as_rawline",
+      "description": "(Internal) Build a raw command string for each test step based on the current configuration.",
+      "parameters": [],
+      "returns":{
+        "type":"list[str]",
+        "description":"List of formatted command strings ready to be sent to LANforge."
+      }
+    },
+    {
+      "name": "_apply_simplified_atten_cli",
+      "description": "(Internal) Translate simplified attenuation CLI flags into the detailed config needed for the test plan.",
+      "parameters": [],
+      "returns":{"type":"None"}
+    },
+    {
+      "name": "setup",
+      "description": "Set up connections to LANforge, create resources and prepare the environment for testing.",
+      "parameters": [],
+      "returns":{"type":"None"}
+    },
+    {
+      "name": "run",
+      "description": "Execute the prepared test plan against LANforge and capture results.",
+      "parameters": [],
+      "returns":{
+        "type":"dict",
+        "description":"Test results, optionally written to file."
+      }
+    },
+    {
+      "name": "main",
+      "description": "Top‑level entry point: parse arguments, validate them, configure logging, create the test instance, run it and handle reporting.",
+      "parameters": [],
+      "returns":{"type":"None"},
+      "example_usage": ["if __name__ == \"__main__\": main()"]
+    }
+  ],
+  "classes": [
+    {
+      "name": "DataplaneTest",
+      "description": "Encapsulates the entire dataplane test lifecycle: configuration, setup, execution and result handling.",
+      "methods": [
+        {
+          "name": "__init__",
+          "parameters": [
+            {"name":"args","type":"argparse.Namespace","required":true}
+          ],
+          "returns":{"type":"None"},
+          "description":"Initialise the test with CLI arguments."
+        },
+        {
+          "name": "_prepare_as_rawline",
+          "parameters": [],
+          "returns":{
+            "type":"list[str]",
+            "description":"Raw command strings for LANforge."
+          }
+        },
+        {
+          "name": "_apply_simplified_atten_cli",
+          "parameters": [],
+          "returns":{"type":"None"}
+        },
+        {
+          "name": "setup",
+          "parameters": [],
+          "returns":{"type":"None"},
+          "description":"Connect to LANforge, create resources and configure the test environment."
+        },
+        {
+          "name": "run
